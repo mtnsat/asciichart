@@ -20,7 +20,7 @@ public:
   explicit Asciichart(std::vector<double> series)
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
-        basic_width_of_label_(0), show_legend_(false) {
+        basic_width_of_label_(0), show_legend_(false), label_precision_(0) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -29,7 +29,7 @@ public:
   explicit Asciichart(std::vector<std::vector<double>> series)
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
-        basic_width_of_label_(0), show_legend_(false) {
+        basic_width_of_label_(0), show_legend_(false), label_precision_(0) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -40,7 +40,7 @@ public:
       const std::unordered_map<std::string, std::vector<double>> &series)
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
-        basic_width_of_label_(0), show_legend_(false) {
+        basic_width_of_label_(0), show_legend_(false), label_precision_(0)  {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -87,6 +87,12 @@ public:
   /// If show legend.
   Asciichart &show_legend(bool show) {
     show_legend_ = show;
+    return *this;
+  }
+
+  /// Set label precision.
+  Asciichart &label_precision(int precision) {
+    label_precision_ = precision;
     return *this;
   }
 
@@ -222,6 +228,7 @@ private:
   double offset_;
   size_t legend_padding_;
   size_t basic_width_of_label_;
+  int label_precision_;
 
   bool show_legend_;
 
@@ -274,7 +281,7 @@ private:
     std::stringstream ss;
     ss << std::setw(show_legend_ ? legend_padding_ + basic_width_of_label_
                                  : basic_width_of_label_)
-       << std::setfill(' ') << std::setprecision(2);
+       << std::setfill(' ') << std::setprecision(label_precision_);
     ss << x;
     return ss.str();
   }
