@@ -20,7 +20,7 @@ public:
   explicit Asciichart(std::vector<double> series)
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
-        basic_width_of_label_(0), show_legend_(false), label_precision_(0) {
+        basic_width_of_label_(0), show_legend_(false), label_precision_(2) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -29,7 +29,7 @@ public:
   explicit Asciichart(std::vector<std::vector<double>> series)
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
-        basic_width_of_label_(0), show_legend_(false), label_precision_(0) {
+        basic_width_of_label_(0), show_legend_(false), label_precision_(2) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -40,7 +40,7 @@ public:
       const std::unordered_map<std::string, std::vector<double>> &series)
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
-        basic_width_of_label_(0), show_legend_(false), label_precision_(0)  {
+        basic_width_of_label_(0), show_legend_(false), label_precision_(2)  {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -277,7 +277,7 @@ private:
     }
   }
 
-  std::string FormatLabel(int x) {
+  std::string FormatLabel(double x) {
     std::stringstream ss;
     ss << std::setw(show_legend_ ? legend_padding_ + basic_width_of_label_
                                  : basic_width_of_label_)
