@@ -51,7 +51,6 @@ void example3() {
   }
 
   Asciichart asciichart(std::vector<std::vector<double>>{series});
-  asciichart.label_precision(-1);
   std::cout << asciichart.height(6).Plot();
 }
 
