@@ -278,11 +278,16 @@ private:
   }
 
   std::string FormatLabel(double x) {
+    auto width_of_label_ = basic_width_of_label_;
+    if(show_legend_)
+        width_of_label_ += legend_padding_;
+    if(label_precision_)
+        width_of_label_ += label_precision_ + 1;
+
     std::stringstream ss;
-    ss << std::setw(show_legend_ ? legend_padding_ + basic_width_of_label_
-                                 : basic_width_of_label_)
-       << std::setfill(' ') << std::setprecision(label_precision_);
-    ss << x;
+    ss << std::setw(width_of_label_) << std::setfill(' ') 
+       << std::fixed << std::setprecision(label_precision_)
+       << x;
     return ss.str();
   }
 
