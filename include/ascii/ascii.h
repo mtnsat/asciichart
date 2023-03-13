@@ -163,7 +163,7 @@ public:
 
     // 6. axis + labels
     for (double y = min2; y <= max2; y++) {
-      auto label = FormatLabel(std::round(min_ + (y - min2) * range / rows));
+      auto label = FormatLabel(min_ + (y - min2) * range / rows);
       // vertical reverse
       screen[rows - (y - min2)][legend_cols] =
           Text(label, Style().fg(Foreground::From(Color::BLUE)));
