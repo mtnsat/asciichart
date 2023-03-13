@@ -116,8 +116,11 @@ public:
     auto range = max_ - min_;
 
     // make basic padding as size of str(max)
-    basic_width_of_label_ = std::max(std::to_string((int)max_).length(),
-                                     std::to_string((int)min_).length());
+    std::stringstream minLabel;
+    minLabel << std::fixed << std::setprecision(label_precision_) << min_;
+    std::stringstream maxLabel;
+    maxLabel << std::fixed << std::setprecision(label_precision_) << max_;
+    basic_width_of_label_ = std::max(maxLabel.str().length(), minLabel.str().length());
 
     // 3. width and height
     int width = 0;
@@ -281,8 +284,6 @@ private:
     auto width_of_label_ = basic_width_of_label_;
     if(show_legend_)
         width_of_label_ += legend_padding_;
-    if(label_precision_)
-        width_of_label_ += label_precision_ + 1;
 
     std::stringstream ss;
     ss << std::setw(width_of_label_) << std::setfill(' ') 

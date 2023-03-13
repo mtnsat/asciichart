@@ -9,6 +9,7 @@
 void example1();
 void example2();
 void example3();
+void example4();
 void example_legend();
 void example_legend2();
 void animation();
@@ -42,12 +43,22 @@ void example2() {
   std::cout << asciichart.height(6).Plot();
 }
 
-
 void example3() {
   using namespace ascii;
   std::vector<double> series;
   for (int i = 0; i < 100; i += 2) {
     series.push_back(3400 * std::cos(i * (kPI * 8) / 120));
+  }
+
+  Asciichart asciichart(std::vector<std::vector<double>>{series});
+  std::cout << asciichart.height(6).Plot();
+}
+
+void example4() {
+  using namespace ascii;
+  std::vector<double> series;
+  for (int i = 0; i < 100; i += 2) {
+    series.push_back(std::cos(i * (kPI * 8) * 0.1));
   }
 
   Asciichart asciichart(std::vector<std::vector<double>>{series});
