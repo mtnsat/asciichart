@@ -124,17 +124,6 @@ public:
     // 2. calaculate range
     auto range = max_ - min_;
 
-    // make basic padding as size of str(max)
-    std::stringstream minLabel;
-    std::stringstream maxLabel;
-    if(fixed_label_precision_) {
-        minLabel << std::fixed;
-        maxLabel << std::fixed;
-    }
-    minLabel << std::setprecision(label_precision_) << min_;
-    maxLabel << std::setprecision(label_precision_) << max_;
-    basic_width_of_label_ = std::max(maxLabel.str().length(), minLabel.str().length());
-
     // 3. width and height
     int width = 0;
     for (auto &label_trace_pair : series_) {
@@ -178,6 +167,13 @@ public:
         rows + 1, std::vector<Text>(cols, symbols_["empty"]));
 
     // 6. axis + labels
+    for (double y = min2; y <= max2; y++) {
+        std::stringstream ss;
+        if(fixed_label_precision_)
+            ss << std::fixed;
+        ss << std::setprecision(label_precision_) << (min_ + (y - min2) * range / rows);
+        basic_width_of_label_ = std::max(basic_width_of_label_, ss.str().length());
+    }
     for (double y = min2; y <= max2; y++) {
       auto label = FormatLabel(min_ + (y - min2) * range / rows);
       // vertical reverse
