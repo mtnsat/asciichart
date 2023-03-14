@@ -21,7 +21,7 @@ public:
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
         basic_width_of_label_(0), show_legend_(false), 
-        label_precision_(2), fixed_label_precision_(false) {
+        label_precision_(0), fixed_label_precision_(true) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -31,7 +31,7 @@ public:
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
         basic_width_of_label_(0), show_legend_(false),
-        label_precision_(2), fixed_label_precision_(false) {
+        label_precision_(0), fixed_label_precision_(true) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -43,7 +43,7 @@ public:
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
         basic_width_of_label_(0), show_legend_(false),
-        label_precision_(2), fixed_label_precision_(false) {
+        label_precision_(0), fixed_label_precision_(true) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
