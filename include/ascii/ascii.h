@@ -94,8 +94,8 @@ public:
   }
 
   /// Set label precision.
-  Asciichart &label_precision(int precision) {
-    label_precision_ = precision;
+  Asciichart &label_precision(int label_precision) {
+    label_precision_ = label_precision;
     return *this;
   }
 
