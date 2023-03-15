@@ -16,32 +16,7 @@ void animation();
 
 int main() {
   setlocale(LC_ALL, "");
-  
-  std::cout << "Example #1:" << std::endl;
-  example1();
-  std::cout << std::endl;;
-
-  std::cout <<"Example #2:" << std::endl;
-  example2();
-  std::cout << std::endl;;
-
-  std::cout << "Example #3:" << std::endl;
   example3();
-  std::cout << std::endl;;
-
-  std::cout << "Example #4:" << std::endl;
-  example4();
-  std::cout << std::endl;;
-
-  std::cout << "Example Legend #1:" << std::endl;
-  example_legend();
-  std::cout << std::endl;;
-
-  std::cout << "Example Legend #2:" << std::endl;
-  example_legend2();
-  std::cout << std::endl;;
-
-// animation();
   return 0;
 }
 
