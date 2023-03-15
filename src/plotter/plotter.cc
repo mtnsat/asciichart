@@ -98,6 +98,7 @@ void example_label_locale() {
     << "System locale" << std::endl << asciichart.label_locale("").Plot() << std::endl
     << "Explicit locale (en_US.utf8)" << std::endl << asciichart.label_locale("en_US.utf8").Plot() << std::endl
     << "Explicit locale (es_ES.utf8)" << std::endl << asciichart.label_locale("es_ES.utf8").Plot() << std::endl
+    << "Invalid locale" << std::endl << asciichart.label_locale("xx_XX").Plot() << std::endl
     << std::endl;
 }
 

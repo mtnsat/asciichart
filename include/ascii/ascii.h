@@ -122,6 +122,15 @@ public:
 
   /// Generate this chart.
   std::string Plot() {
+    // Validations
+    try {
+        std::stringstream ss;
+        ss.imbue(std::locale(label_locale_));
+    }
+    catch (std::exception& e) {
+        return "Label locale \'" + label_locale_ + "\' is not valid";
+    }
+
     // 1. calculate min and max
     for (auto &label_trace_pair : series_) {
       for (auto &item : label_trace_pair.second) {
