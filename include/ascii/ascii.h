@@ -20,7 +20,8 @@ public:
   explicit Asciichart(std::vector<double> series)
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
-        basic_width_of_label_(0), show_legend_(false) {
+        basic_width_of_label_(0), show_legend_(false), 
+        label_precision_(0), fixed_label_precision_(true) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -29,7 +30,8 @@ public:
   explicit Asciichart(std::vector<std::vector<double>> series)
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
-        basic_width_of_label_(0), show_legend_(false) {
+        basic_width_of_label_(0), show_legend_(false),
+        label_precision_(0), fixed_label_precision_(true) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -40,7 +42,8 @@ public:
       const std::unordered_map<std::string, std::vector<double>> &series)
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
-        basic_width_of_label_(0), show_legend_(false) {
+        basic_width_of_label_(0), show_legend_(false),
+        label_precision_(0), fixed_label_precision_(true) {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -90,6 +93,18 @@ public:
     return *this;
   }
 
+  /// Set label precision.
+  Asciichart &label_precision(int label_precision) {
+    label_precision_ = label_precision;
+    return *this;
+  }
+
+  /// Set fixed label precision.
+  Asciichart &fixed_label_precision(bool fixed_label_precision) {
+    fixed_label_precision_ = fixed_label_precision;
+    return *this;
+  }
+
   /// Set symbols used to plot.
   Asciichart &symbols(std::map<std::string, std::string> symbols) {
     symbols_ = symbols;
@@ -108,10 +123,6 @@ public:
 
     // 2. calaculate range
     auto range = max_ - min_;
-
-    // make basic padding as size of str(max)
-    basic_width_of_label_ = std::max(std::to_string((int)max_).length(),
-                                     std::to_string((int)min_).length());
 
     // 3. width and height
     int width = 0;
@@ -157,7 +168,14 @@ public:
 
     // 6. axis + labels
     for (double y = min2; y <= max2; y++) {
-      auto label = FormatLabel(std::round(min_ + (y - min2) * range / rows));
+        std::stringstream ss;
+        if(fixed_label_precision_)
+            ss << std::fixed;
+        ss << std::setprecision(label_precision_) << (min_ + (y - min2) * range / rows);
+        basic_width_of_label_ = std::max(basic_width_of_label_, ss.str().length());
+    }
+    for (double y = min2; y <= max2; y++) {
+      auto label = FormatLabel(min_ + (y - min2) * range / rows);
       // vertical reverse
       screen[rows - (y - min2)][legend_cols] =
           Text(label, Style().fg(Foreground::From(Color::BLUE)));
@@ -222,6 +240,8 @@ private:
   double offset_;
   size_t legend_padding_;
   size_t basic_width_of_label_;
+  int label_precision_;
+  bool fixed_label_precision_;
 
   bool show_legend_;
 
@@ -270,12 +290,17 @@ private:
     }
   }
 
-  std::string FormatLabel(int x) {
+  std::string FormatLabel(double x) {
+    auto width_of_label_ = basic_width_of_label_;
+    if(show_legend_)
+        width_of_label_ += legend_padding_;
+
     std::stringstream ss;
-    ss << std::setw(show_legend_ ? legend_padding_ + basic_width_of_label_
-                                 : basic_width_of_label_)
-       << std::setfill(' ') << std::setprecision(2);
-    ss << x;
+    if(fixed_label_precision_)
+        ss << std::fixed;
+    ss << std::setw(width_of_label_) << std::setfill(' ') 
+       << std::setprecision(label_precision_)
+       << x;
     return ss.str();
   }
 
