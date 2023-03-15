@@ -168,11 +168,8 @@ public:
 
     // 6. axis + labels
     for (double y = min2; y <= max2; y++) {
-        std::stringstream ss;
-        if(fixed_label_precision_)
-            ss << std::fixed;
-        ss << std::setprecision(label_precision_) << (min_ + (y - min2) * range / rows);
-        basic_width_of_label_ = std::max(basic_width_of_label_, ss.str().length());
+        auto labelText = FormatLabelText(min_ + (y - min2) * range / rows);
+        basic_width_of_label_ = std::max(basic_width_of_label_, labelText.length());
     }
     for (double y = min2; y <= max2; y++) {
       auto label = FormatLabel(min_ + (y - min2) * range / rows);
@@ -296,11 +293,15 @@ private:
         width_of_label_ += legend_padding_;
 
     std::stringstream ss;
+    ss << std::setw(width_of_label_) << std::setfill(' ') << FormatLabelText(x);
+    return ss.str();
+  }
+
+  std::string FormatLabelText(double x) {
+    std::stringstream ss;
     if(fixed_label_precision_)
         ss << std::fixed;
-    ss << std::setw(width_of_label_) << std::setfill(' ') 
-       << std::setprecision(label_precision_)
-       << x;
+    ss << std::setprecision(label_precision_) << x;
     return ss.str();
   }
 
