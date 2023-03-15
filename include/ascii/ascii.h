@@ -21,7 +21,8 @@ public:
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
         basic_width_of_label_(0), show_legend_(false), 
-        label_precision_(0), fixed_label_precision_(true) {
+        label_precision_(0), fixed_label_precision_(true),
+        label_locale_("C") {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -31,7 +32,8 @@ public:
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
         basic_width_of_label_(0), show_legend_(false),
-        label_precision_(0), fixed_label_precision_(true) {
+        label_precision_(0), fixed_label_precision_(true),
+        label_locale_("C") {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -43,7 +45,8 @@ public:
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
         basic_width_of_label_(0), show_legend_(false),
-        label_precision_(0), fixed_label_precision_(true) {
+        label_precision_(0), fixed_label_precision_(true),
+        label_locale_("C") {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -105,6 +108,12 @@ public:
     return *this;
   }
 
+  /// Set label locale.
+  Asciichart &label_locale(const std::string &label_locale) {
+    label_locale_ = label_locale;
+    return *this;
+  }
+
   /// Set symbols used to plot.
   Asciichart &symbols(std::map<std::string, std::string> symbols) {
     symbols_ = symbols;
@@ -113,6 +122,15 @@ public:
 
   /// Generate this chart.
   std::string Plot() {
+    // Validations
+    try {
+        std::stringstream ss;
+        ss.imbue(std::locale(label_locale_));
+    }
+    catch (std::exception& e) {
+        return "Label locale \'" + label_locale_ + "\' is not valid";
+    }
+
     // 1. calculate min and max
     for (auto &label_trace_pair : series_) {
       for (auto &item : label_trace_pair.second) {
@@ -239,6 +257,7 @@ private:
   size_t basic_width_of_label_;
   int label_precision_;
   bool fixed_label_precision_;
+  std::string label_locale_;
 
   bool show_legend_;
 
@@ -301,6 +320,7 @@ private:
     std::stringstream ss;
     if(fixed_label_precision_)
         ss << std::fixed;
+    ss.imbue(std::locale(label_locale_));
     ss << std::setprecision(label_precision_) << x;
     return ss.str();
   }
