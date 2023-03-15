@@ -10,6 +10,7 @@ void example1();
 void example2();
 void example3();
 void example4();
+void example_label_locale();
 void example_legend();
 void example_legend2();
 void animation();
@@ -82,6 +83,22 @@ void animation() {
     }
     std::cout << asciichart.height(height).Plot();
   }
+}
+
+void example_label_locale() {
+  using namespace ascii;
+  std::vector<double> series;
+  for (int i = 0; i < 100; i += 2) {
+    series.push_back(3400 * std::cos(i * (kPI * 8) / 120));
+  }
+  Asciichart asciichart(std::vector<std::vector<double>>{series});
+  asciichart.height(6).min(-3500).max(3500).label_precision(2).fixed_label_precision(true);
+  std::cout 
+    << "Default locale" << std::endl << asciichart.Plot() << std::endl
+    << "System locale" << std::endl << asciichart.label_locale("").Plot() << std::endl
+    << "Explicit locale (en_US.utf8)" << std::endl << asciichart.label_locale("en_US.utf8").Plot() << std::endl
+    << "Explicit locale (es_ES.utf8)" << std::endl << asciichart.label_locale("es_ES.utf8").Plot() << std::endl
+    << std::endl;
 }
 
 void example_legend() {

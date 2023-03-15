@@ -21,7 +21,8 @@ public:
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
         basic_width_of_label_(0), show_legend_(false), 
-        label_precision_(0), fixed_label_precision_(true) {
+        label_precision_(0), fixed_label_precision_(true),
+        label_locale_("C") {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -31,7 +32,8 @@ public:
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
         basic_width_of_label_(0), show_legend_(false),
-        label_precision_(0), fixed_label_precision_(true) {
+        label_precision_(0), fixed_label_precision_(true),
+        label_locale_("C") {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -43,7 +45,8 @@ public:
       : height_(kDoubleNotANumber), min_(kDoubleInfinity),
         max_(kDoubleNegInfinity), offset_(3), legend_padding_(10),
         basic_width_of_label_(0), show_legend_(false),
-        label_precision_(0), fixed_label_precision_(true) {
+        label_precision_(0), fixed_label_precision_(true),
+        label_locale_("C") {
     InitSeries(series);
     InitStyles();
     InitSymbols();
@@ -102,6 +105,12 @@ public:
   /// Set fixed label precision.
   Asciichart &fixed_label_precision(bool fixed_label_precision) {
     fixed_label_precision_ = fixed_label_precision;
+    return *this;
+  }
+
+  /// Set label locale.
+  Asciichart &label_locale(const std::string &label_locale) {
+    label_locale_ = label_locale;
     return *this;
   }
 
@@ -239,6 +248,7 @@ private:
   size_t basic_width_of_label_;
   int label_precision_;
   bool fixed_label_precision_;
+  std::string label_locale_;
 
   bool show_legend_;
 
@@ -301,6 +311,7 @@ private:
     std::stringstream ss;
     if(fixed_label_precision_)
         ss << std::fixed;
+    ss.imbue(std::locale(label_locale_));
     ss << std::setprecision(label_precision_) << x;
     return ss.str();
   }
